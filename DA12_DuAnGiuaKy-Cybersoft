@@ -1,0 +1,33 @@
+import csv
+import pandas as pd
+import matplotlib.pyplot as plt
+
+file_path = "/Users/myvo/Downloads/jobs_in_data.csv"
+
+# Use pd.read_csv to read the CSV file into a DataFrame
+jobs = pd.read_csv(file_path)
+
+# Display information about the DataFrame
+print(jobs.info())
+
+# Extract the top 3 countries
+top_3_countries = jobs['company_location'].value_counts(normalize=True).head(3)
+
+# Create a DataFrame with unique work years as index
+df = pd.DataFrame(index=jobs['work_year'].unique())
+
+# Populate the DataFrame with counts for each country and 'Others'
+for year in df.index:
+    total = 0
+    for country in top_3_countries.index:
+        df.loc[year, country] = jobs[(jobs['company_location'] == country) & (jobs['work_year'] == year)].shape[0]
+        total += df.loc[year, country]
+
+    df.loc[year, 'Others'] = jobs[jobs['work_year'] == year].shape[0] - total
+
+# Sort the DataFrame by index and plot the stacked bar chart
+colors = ['tomato', 'violet', 'red', 'royalblue']
+df.sort_index().plot(kind='bar', stacked=True, color = colors)
+plt.show()
+
+jobs['experience_level'].value_counts()
