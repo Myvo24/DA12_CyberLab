@@ -1,3 +1,58 @@
 # BAI TAP 1
+# BaiTap1
+
+import csv
+import matplotlib.pyplot as plt
+from collections import Counter
+
+# Đường dẫn đến file dữ liệu
+file_path = '/Users/myvo/Downloads/DA12_Tuan3_CyberSoft/sale_data_vn.csv'
+
+# Đọc dữ liệu từ file CSV
+with open(file_path, 'r', encoding='utf-8') as f:
+    data_reader = csv.reader(f)
+    print(data_reader)
+    next(data_reader)  # Bỏ qua header
+    # Tạo danh sách các địa phương và giới tính
+    locations = []
+    genders = []
+
+    for row in data_reader:
+        locations.append(row[2])  # Cột vị trí (địa phương)
+        genders.append(row[4])    # Cột giới tính
+
+# Tính tần số của địa phương và giới tính
+location_counts = Counter(locations)
+gender_counts = Counter(genders)
+
+# Vẽ biểu đồ cột cho TẦN SỐ địa phương
+plt.subplot(1,2,1)
+plt.bar(location_counts.keys(), location_counts.values(), color='g')
+plt.title('Tần số đơn hàng theo thành phố (HN, SG, DN)')
+# x_list = ("Hà Nội", "TP HCM", "Đà Nẵng")
+# plt.xticks(location_counts.keys, x_list, rotation=45)
+plt.xlabel('Thành phố')
+plt.ylabel('Tần số')
+plt.show()
+
+# Vẽ biểu đồ cột cho TẦN SỐ giới tính
+plt.subplot(1,2,2)
+plt.bar(gender_counts.keys(), gender_counts.values(), color='blue')
+plt.title('Tần số đơn hàng theo giới tính')
+plt.xlabel('Giới Tính')
+plt.ylabel('Tần số')
+plt.show()
+
+# Vẽ biểu đồ tròn (pie chart) TẦN SUẤT cho giới tính
+plt.figure()
+plt.pie(gender_counts.values(), labels=gender_counts.keys(), autopct='%1.1f%%', startangle=90, colors=['pink', 'lightblue'])
+plt.title('Tần suất đơn hàng theo giới tính')
+plt.show()
+
+# Vẽ biểu đồ tròn (pie chart) TẦN SUẤT cho thành phố
+plt.figure()
+plt.pie(location_counts.values(), labels=location_counts.keys(), autopct='%1.1f%%', startangle=90, colors=['cyan', 'green', 'yellow'])
+plt.title('Tần suất đơn hàng theo thành phố')
+plt.show()
 # BAI TAP 2
 
